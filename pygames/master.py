@@ -15,17 +15,18 @@ def init():
 
 def elimination(parameters, allFitness):
     for e in range(25):
-        poppy=allFitness.index(min(allFitness))
+        poppy = allFitness.index(min(allFitness))
         allFitness.pop(poppy)
         parameters.pop(poppy)
     return parameters
 
+
 def mutate(survivors, learningRate):
-    nsurv=survivors
+    nsurv = survivors
     for i in range(25):
-        z=init()
-        l=[]
-        ns=[]
+        z = init()
+        l = []
+        ns = []
         for j in z:
             l.append(j*learningRate)
         for f in range(8):
@@ -33,5 +34,8 @@ def mutate(survivors, learningRate):
         nsurv.append(ns)
     return nsurv
 
+
 if __name__ == "__main__":
     print(init())
+
+    # allah
