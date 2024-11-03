@@ -171,7 +171,7 @@ while active:
         boost = True
     if boost:
         booster += 1
-        if booster > 35:
+        if booster > 32:
             enemy.y += erel[1]//5
             enemy.x -= erel[0]//3
         enemy.y += erel[1]//20
@@ -216,6 +216,8 @@ while active:
 
         fpsobj = font.render(f"{int(fpssh)}", True, (200, 200, 200))
         window.blit(fpsobj, (20, 20))
+        inputz = font.render((f"w-{input_w} a-{input_a} d-{input_d}"),True,(200,200,200))
+        window.blit(inputz, (20, 80))
 
     pygame.display.flip()
     cloc.tick(fps)

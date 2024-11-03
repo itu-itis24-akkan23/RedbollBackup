@@ -159,7 +159,7 @@ while active:
         boost = True
     if boost:
         booster += 1
-        if booster > 35:
+        if booster > 32:
             enemy.y += erel[1]//5
             enemy.x -= erel[0]//3
         enemy.y += erel[1]//20

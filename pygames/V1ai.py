@@ -56,18 +56,7 @@ landse = lands+[enemy]
 time = 0
 
 batchSize = 50
-continu=True
 
-
-parameters = []
-if not continu:
-    for i in range(batchSize):
-        randomParam = master.init()
-        parameters.append(randomParam)
-else:
-    parameters = 50*[np.load('data.npy', allow_pickle=True)]
-    currentParameter = parameters[0]
-    algorithm.init(currentParameter)
 
 creatureNumber = 0
 hitCounter = 0
@@ -77,10 +66,23 @@ jumpCount=0
 
 learningRate = 0.5
 afterLearn = 0.2
+continu = False
+
+
+parameters = []
+if not continu:
+    for i in range(batchSize):
+        randomParam = master.init()
+        parameters.append(randomParam)
+        currentParameter=parameters[0]
+else:
+    parameters = 50*[np.load('data.npy', allow_pickle=True)]
+    currentParameter = parameters[0]
+    algorithm.init(currentParameter)
 
 
 while active:
-    if input_a==False and input_d==False:
+    if input_a == input_d:
         jumpCount+=1
 
     if time == 900:
@@ -102,7 +104,6 @@ while active:
             parameters = master.mutate(survivingParams, learningRate)
             allFitness = []
         currentParameter = parameters[creatureNumber]
-        algorithm.init(currentParameter)
         time = 0
         input_w = False
         input_a = False
@@ -127,7 +128,7 @@ while active:
     rightcol = False
     collision = False
     for land in lands:
-        if blob.colliderect(land):
+        if blob.colliderect(land):#Collisions
             collision = True
             target_level = screenm+19
             target_relative = target_level - land.y
@@ -154,6 +155,7 @@ while active:
 
     #       ALGORITHM
 
+    algorithm.init(currentParameter)
     inputs = algorithm.algorithm(lands[0:4], enemy, constants, time, collision)
     input_w, input_a, input_d = inputs
 
@@ -184,7 +186,7 @@ while active:
         l.y += vertical
         if l.y < -200:
             l.y += 1300
-            jumpCount+=2
+            jumpCount+=5
         if l.x < -700:
             l.x += 2400
             jumpCount-=1
@@ -227,7 +229,7 @@ while active:
         boost = True
     if boost:
         booster += 1
-        if booster > 35:
+        if booster > 32:
             enemy.y += erel[1]//5
             enemy.x -= erel[0]//3
         enemy.y += erel[1]//20
