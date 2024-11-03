@@ -75,7 +75,9 @@ allFitness = []
 genDone=0
 jumpCount=0
 
-learningRate = 0.2
+learningRate = 0.5
+afterLearn = 0.2
+
 
 while active:
     if input_a==False and input_d==False:
@@ -90,7 +92,7 @@ while active:
         if creatureNumber == batchSize:
             print("gen", genDone,max(allFitness))
             if genDone>=20:
-                learningRate=0.05
+                learningRate=afterLearn
             array = np.array(
                 (parameters[allFitness.index(max(allFitness))]), dtype=object)
             np.save("data.npy",array,allow_pickle=True)
@@ -123,16 +125,6 @@ while active:
     time += 1
     leftcol = False
     rightcol = False
-    # for i in pg.event.get():
-    #     if i.type == pg.QUIT:
-    #         active = False
-    #     elif i.type == pg.MOUSEBUTTONDOWN:
-    #         pass
-    #     elif i.type == pg.KEYDOWN:
-    #         if i.key == pg.K_h:
-    #             hitbox = not hitbox
-
-    # COLLISION
     collision = False
     for land in lands:
         if blob.colliderect(land):
@@ -226,7 +218,7 @@ while active:
 
     if erel[1] > 0:
         enemy.y += 8
-    enemy.x -= erel[0]//100
+    enemy.x -= erel[0]//50
     enemy.y += erel[1]//5
     if erel[1] < 20:
         boost = False

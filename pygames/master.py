@@ -23,14 +23,14 @@ def elimination(parameters, allFitness):
 
 def mutate(survivors, learningRate):
     nsurv = survivors
-    for survivor in range(25):
-        z = init()
+    for survivornum in range(25):
+        rands = init()
         l = []
         ns = []
-        for j in z:
+        for j in rands:
             l.append(j*learningRate)
         for f in range(8):
-            ns.append(survivors[survivor][f]+l[f])
+            ns.append(survivors[survivornum][f]+l[f])
         nsurv.append(ns)
     return nsurv
 
