@@ -89,7 +89,7 @@ while active:
             for lan in landse:
                 lan.y += target_relative
         elif vertical > 0:
-            gravity_state = 1
+            gravity_state  = 1
         elif vertical > -max_velocity:
             gravity_state = 2
 
@@ -213,12 +213,13 @@ while active:
         window.blit(enemy_loc, (20, 40))
         if hit:
             window.blit(font.render(("NOOO"), True, (200, 100, 100)), (20, 60))
-
+        else:
+            window.blit(font.render(("YEEE"), True, (100, 200, 100)), (20, 60))
         fpsobj = font.render(f"{int(fpssh)}", True, (200, 200, 200))
         window.blit(fpsobj, (20, 20))
         inputz = font.render((f"w-{input_w} a-{input_a} d-{input_d}"),True,(200,200,200))
         window.blit(inputz, (20, 80))
-
+        window.blit(font.render((f"{vertical}"), True, (200, 200, 200)), (20, 100))
     pygame.display.flip()
     cloc.tick(fps)
 pygame.quit()

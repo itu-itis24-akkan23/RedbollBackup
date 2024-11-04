@@ -4,6 +4,7 @@ import master
 import numpy as np
 
 
+# region INIT
 pg.init()
 a = pg.display.Info()
 screenx = a.current_w
@@ -11,7 +12,12 @@ screeny = a.current_h
 screenm = screeny//2
 screenmx = screenx//2
 
-#window = pg.display.set_mode((screenx, screeny-60), pg.RESIZABLE)
+hitbox = False
+if hitbox:
+    window = pg.display.set_mode((screenx, screeny-60), pg.RESIZABLE)
+    cloc = pg.time.Clock()
+    fps = 0
+
 active = True
 pg.display.set_caption("Among Us")
 blob = pg.Rect(screenmx-8, screeny//2+5, 16, 17)
@@ -20,11 +26,11 @@ blob_left = pg.Rect(screenmx-20, screeny//2-10, 15, 20)
 imagere = pg.Rect(screenmx-20, screenm-20, 40, 40)
 enemy = pg.Rect(screenmx-10, 900, 60, 60)
 
-#cloc = pg.time.Clock()
+
 font = pg.font.Font(None, 36)
 frame10 = 0  # 0 to 9
 vertical = -10
-hitbox = False
+
 collision = False
 run_speed = 12
 max_velocity = 30
@@ -32,9 +38,11 @@ jump_str = 37
 boost = False
 hboost = False
 
-
-fps = 0
-
+creatureNumber = 0
+hitCounter = 0
+allFitness = []
+genDone = 0
+jumpCount = 0
 
 input_w = False
 input_a = False
@@ -54,51 +62,50 @@ for k in range(8):
 
 landse = lands+[enemy]
 time = 0
+# endregion
 
-batchSize = 50
 
-
-creatureNumber = 0
-hitCounter = 0
-allFitness = []
-genDone=0
-jumpCount=0
+batchSize = 50  # Cant be changed by itself
 
 learningRate = 0.5
-afterLearn = 0.2
+afterLearn = 0.2  # Real learning rate, activates after gen20
 continu = False
 
-
+# region afterINIT
 parameters = []
 if not continu:
     for i in range(batchSize):
         randomParam = master.init()
         parameters.append(randomParam)
-        currentParameter=parameters[0]
+        currentParameter = parameters[0]
 else:
     parameters = 50*[np.load('data.npy', allow_pickle=True)]
     currentParameter = parameters[0]
     algorithm.init(currentParameter)
+# endregion
 
-
+# region MAIN
 while active:
+    for i in pg.event.get():
+        if i.type == pg.QUIT:
+            active = False
     if input_a == input_d:
-        jumpCount+=1
+        jumpCount += 0.02
 
     if time == 900:
-        fitness = (900-hitCounter)/9-jumpCount/3
+        fitness = (900-hitCounter)/9-jumpCount/15
         allFitness.append(fitness)
         hitCounter = 0
-        jumpCount=0
+        jumpCount = 0
         creatureNumber += 1
         if creatureNumber == batchSize:
-            print("gen", genDone,max(allFitness))
-            if genDone>=20:
-                learningRate=afterLearn
+            print("gen", genDone, max(allFitness))
+            if genDone >= 20:
+                learningRate = afterLearn
             array = np.array(
                 (parameters[allFitness.index(max(allFitness))]), dtype=object)
-            np.save("data.npy",array,allow_pickle=True)
-            genDone+=1
+            np.save("data.npy", array, allow_pickle=True)
+            genDone += 1
             creatureNumber = 0
             survivingParams = master.elimination(parameters, allFitness)
             parameters = master.mutate(survivingParams, learningRate)
@@ -122,13 +129,14 @@ while active:
             else:
                 mon = (pg.Rect(int(k*600-2220), int(1060 - absk), 40, 110))
             lands.append(mon)
+        landse = lands+[enemy]
 
     time += 1
     leftcol = False
     rightcol = False
     collision = False
     for land in lands:
-        if blob.colliderect(land):#Collisions
+        if blob.colliderect(land):  # Collisions
             collision = True
             target_level = screenm+19
             target_relative = target_level - land.y
@@ -161,13 +169,13 @@ while active:
 
     # INPUT
 
-    #press = pg.key.get_pressed()
+    # press = pg.key.get_pressed()
     if collision:
         vertical = 0
-        jumpCount-=0.01
+        jumpCount -= 0.05
         if input_w:
             vertical += jump_str
-            jumpCount+=0.2
+            jumpCount -= 0.15
 
     elif gravity_state == 1:
         vertical -= 3
@@ -189,12 +197,12 @@ while active:
             jumpCount+=5
         if l.x < -700:
             l.x += 2400
-            jumpCount-=1
+            jumpCount -= 20
         elif l.x > screenx+300:
             l.x -= 2400
-            jumpCount-=1
+            jumpCount -= 20
 
-    #fpssh = cloc.get_fps()
+
     frame10 = (frame10 + 1) % 10
     if frame10 == 0:
         pass
@@ -239,30 +247,33 @@ while active:
         hit = True
     else:
         hit = False
-    #             DISPLAY
     if hit:
         hitCounter += 1
 
-    # window.fill((120, 80, 240))
-    # if hitbox == True:
-    #     fps = 30
-    #     pg.draw.rect(window, (200, 200, 200), imagere)
-    #     pg.draw.rect(window, (0, 255, 0), blob)
-    #     pg.draw.rect(window, (0, 255, 0), blob_left)
-    #     pg.draw.rect(window, (0, 255, 0), blob_right)
-    #     for land in lands:
-    #         pg.draw.rect(window, (0, 0, 255), land)
-    #     pg.draw.rect(window, (255, 0, 0), enemy)
-    #     enemy_loc = font.render(f"{erel}", True, (200, 200, 200))
-    #     window.blit(enemy_loc, (20, 40))
-    #     if hit:
-    #         window.blit(font.render(("NOOO"), True, (200, 100, 100)), (20, 60))
+    #             DISPLAY
 
-    # fpsobj = font.render(f"{int(fpssh)}", True, (200, 200, 200))
-    # window.blit(fpsobj, (20, 20))
 
-    # pg.display.flip()
-    #cloc.tick(fps)
+    
+    if hitbox == True:
+        window.fill((120, 80, 240))
+        fpssh = cloc.get_fps()
+        pg.draw.rect(window, (200, 200, 200), imagere)
+        pg.draw.rect(window, (0, 255, 0), blob)
+        pg.draw.rect(window, (0, 255, 0), blob_left)
+        pg.draw.rect(window, (0, 255, 0), blob_right)
+        for land in lands:
+            pg.draw.rect(window, (0, 0, 255), land)
+        pg.draw.rect(window, (255, 0, 0), enemy)
+        enemy_loc = font.render(f"{erel}", True, (200, 200, 200))
+        window.blit(enemy_loc, (20, 40))
+        if hit:
+            window.blit(font.render(("NOOO"), True, (200, 100, 100)), (20, 60))
 
+        fpsobj = font.render(f"{int(fpssh)}", True, (200, 200, 200))
+        window.blit(fpsobj, (20, 20))
+
+        pg.display.flip()
+        cloc.tick(fps)
+# endregion
 pg.quit()
 exit()

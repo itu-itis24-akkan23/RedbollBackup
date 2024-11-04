@@ -4,7 +4,6 @@ import numpy as np
 def sigma(x):
     return 2/(1+np.e**(x/150))-1
 
-
 def init(parameter):
     global weigh1, weigh2, weigh3, weigh4, bias1, bias2, bias3, bias4
     weigh1, weigh2, weigh3, weigh4, bias1, bias2, bias3, bias4 = parameter
@@ -109,5 +108,5 @@ def algorithm(lands, enemy, constants, time, collision):
     return input_w, input_a, input_d
 
 
-if __name__ == "__main__":
-    algorithm()
+# if __name__ == "__main__":
+#     algorithm()
