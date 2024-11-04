@@ -2,7 +2,7 @@ import pygame as pg
 import algorithm
 import master
 import numpy as np
-import time
+
 
 
 
@@ -14,7 +14,7 @@ screeny = a.current_h
 screenm = screeny//2
 screenmx = screenx//2
 
-hitbox = True
+hitbox = False
 if hitbox:
     window = pg.display.set_mode((screenx, screeny-60), pg.RESIZABLE)
     cloc = pg.time.Clock()
@@ -86,8 +86,7 @@ else:
     currentParameter = parameters[0]
     algorithm.init(currentParameter)
 # endregion
-show=True
-thetime=time.time()
+
 # region MAIN
 while active:
     for i in pg.event.get():
@@ -95,10 +94,6 @@ while active:
             active = False
     if input_a == input_d:
         jumpCount += 0.02
-
-    if genDone==10 and show:
-        print(time.time()-thetime)
-        show=False
 
     if timer == 900:
         fitness = (900-hitCounter)/9-jumpCount/30

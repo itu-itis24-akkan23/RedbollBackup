@@ -11,7 +11,7 @@ def init(parameter):
     weigh1, weigh2, weigh3, weigh4, bias1, bias2, bias3, bias4 = parameter
 
 @jit
-def dottable(inpNormal):
+def dottable(inpNormal, weigh1, weigh2, weigh3, weigh4, bias1, bias2, bias3, bias4):
 
     layer1 = np.dot(inpNormal, weigh1)+bias1
     layer2 = np.dot(layer1, weigh2)+bias2
@@ -68,7 +68,7 @@ def algorithm(lands, enemy, constants, time, collision):
         time=0
     inpNormal=inputer(inputs, time, collision)
 
-    layer4=dottable(inpNormal)
+    layer4 = dottable(inpNormal, weigh1, weigh2, weigh3,weigh4, bias1, bias2, bias3, bias4)
 
     if layer4[0]>0:
         input_w=True
