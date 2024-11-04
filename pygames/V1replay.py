@@ -23,9 +23,9 @@ frame10 = 0  # 0 to 9
 vertical = -10
 hitbox = False
 collision = False
-run_speed = 12
+run_speed = 11
 max_velocity = 30
-jump_str = 37
+jump_str = 36
 boost = False
 hboost=0
 fps = 30
@@ -162,8 +162,8 @@ while active:
 
     if erel[1] > 0:
         enemy.y += 8
-    enemy.x -= erel[0]//50
-    enemy.y += erel[1]//5
+    enemy.x -= erel[0]//30
+    enemy.y += erel[1]//4
     if erel[1] < 20:
         boost = False
         booster = 0

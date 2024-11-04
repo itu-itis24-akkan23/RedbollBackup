@@ -2,6 +2,7 @@ import pygame as pg
 import algorithm
 import master
 import numpy as np
+import time
 
 
 # region INIT
@@ -32,9 +33,9 @@ frame10 = 0  # 0 to 9
 vertical = -10
 
 collision = False
-run_speed = 12
+run_speed = 11
 max_velocity = 30
-jump_str = 37
+jump_str = 36
 boost = False
 hboost = False
 
@@ -61,14 +62,15 @@ for k in range(8):
     lands.append(mon)
 
 landse = lands+[enemy]
-time = 0
+timer = 0
 # endregion
 
 
-batchSize = 50  # Cant be changed by itself
+batchSize = 100  # Cant be changed by itself
 
-learningRate = 0.5
-afterLearn = 0.2  # Real learning rate, activates after gen20
+learningRate = 0.1
+afterLearn = 0.03  # Real learning rate, activates after gen20
+lr=0.01
 continu = False
 
 # region afterINIT
@@ -83,7 +85,8 @@ else:
     currentParameter = parameters[0]
     algorithm.init(currentParameter)
 # endregion
-
+show=True
+thetime=time.time()
 # region MAIN
 while active:
     for i in pg.event.get():
@@ -92,16 +95,22 @@ while active:
     if input_a == input_d:
         jumpCount += 0.02
 
-    if time == 900:
-        fitness = (900-hitCounter)/9-jumpCount/15
+    if genDone==10 and show:
+        print(time.time()-thetime)
+        show=False
+
+    if timer == 900:
+        fitness = (900-hitCounter)/9-jumpCount/25
         allFitness.append(fitness)
         hitCounter = 0
         jumpCount = 0
         creatureNumber += 1
         if creatureNumber == batchSize:
             print("gen", genDone, max(allFitness))
-            if genDone >= 20:
-                learningRate = afterLearn
+            if genDone >= 50:
+                learningRate = lr
+            elif genDone>=20:
+                learningRate=afterLearn
             array = np.array(
                 (parameters[allFitness.index(max(allFitness))]), dtype=object)
             np.save("data.npy", array, allow_pickle=True)
@@ -111,7 +120,7 @@ while active:
             parameters = master.mutate(survivingParams, learningRate)
             allFitness = []
         currentParameter = parameters[creatureNumber]
-        time = 0
+        timer = 0
         input_w = False
         input_a = False
         input_d = False
@@ -131,7 +140,7 @@ while active:
             lands.append(mon)
         landse = lands+[enemy]
 
-    time += 1
+    timer += 1
     leftcol = False
     rightcol = False
     collision = False
@@ -164,7 +173,7 @@ while active:
     #       ALGORITHM
 
     algorithm.init(currentParameter)
-    inputs = algorithm.algorithm(lands[0:4], enemy, constants, time, collision)
+    inputs = algorithm.algorithm(lands[0:4], enemy, constants, timer, collision)
     input_w, input_a, input_d = inputs
 
     # INPUT
@@ -194,7 +203,7 @@ while active:
         l.y += vertical
         if l.y < -200:
             l.y += 1300
-            jumpCount+=5
+            jumpCount+=25
         if l.x < -700:
             l.x += 2400
             jumpCount -= 20
@@ -228,8 +237,8 @@ while active:
 
     if erel[1] > 0:
         enemy.y += 8
-    enemy.x -= erel[0]//50
-    enemy.y += erel[1]//5
+    enemy.x -= erel[0]//30
+    enemy.y += erel[1]//4
     if erel[1] < 20:
         boost = False
         booster = 0
