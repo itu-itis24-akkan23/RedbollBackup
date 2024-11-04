@@ -77,8 +77,6 @@ def algorithm(lands, enemy, constants, time, collision):
     if layer4[2]>0:
         input_d=True
 
-    #print(layer3)
-
     return input_w, input_a, input_d
 
 
