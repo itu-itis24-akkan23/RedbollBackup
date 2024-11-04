@@ -5,6 +5,7 @@ import numpy as np
 import time
 
 
+
 # region INIT
 pg.init()
 a = pg.display.Info()
