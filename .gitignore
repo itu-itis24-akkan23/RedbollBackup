@@ -5,3 +5,4 @@ old_pygames
 .env
 data.npy
 data copy.npy
+__pycache__
