@@ -69,8 +69,8 @@ timer = 0
 batchSize = 100  # Cant be changed by itself
 
 learningRate = 0.1
-afterLearn = 0.03  # Real learning rate, activates after gen20
-lr=0.01
+afterLearn = 0.04  # Real learning rate, activates after gen20
+lr=0.02
 continu = False
 
 # region afterINIT
@@ -100,7 +100,7 @@ while active:
         show=False
 
     if timer == 900:
-        fitness = (900-hitCounter)/9-jumpCount/25
+        fitness = (900-hitCounter)/9-jumpCount/30
         allFitness.append(fitness)
         hitCounter = 0
         jumpCount = 0
