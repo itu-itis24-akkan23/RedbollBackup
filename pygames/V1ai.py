@@ -13,7 +13,7 @@ screeny = a.current_h
 screenm = screeny//2
 screenmx = screenx//2
 
-hitbox = False
+hitbox = True
 if hitbox:
     window = pg.display.set_mode((screenx, screeny-60), pg.RESIZABLE)
     cloc = pg.time.Clock()
