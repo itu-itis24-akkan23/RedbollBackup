@@ -86,7 +86,7 @@ else:
     currentParameter = parameters[0]
     algorithm.init(currentParameter)
 # endregion
-
+relX=0
 # region MAIN
 while active:
     for i in pg.event.get():
@@ -94,9 +94,14 @@ while active:
             active = False
     if input_a == input_d:
         jumpCount += 0.02
-
+    if input_a:
+        relX+=1
+    if input_d:
+        relX-=1
     if timer == 900:
-        fitness = (900-hitCounter)/9-jumpCount/30
+        jumpCount-=abs(relX)*0.0001
+        relX=0
+        fitness = (900-hitCounter)/9-jumpCount/70
         allFitness.append(fitness)
         hitCounter = 0
         jumpCount = 0
@@ -199,13 +204,13 @@ while active:
         l.y += vertical
         if l.y < -200:
             l.y += 1300
-            jumpCount+=25
+            jumpCount+=40
         if l.x < -700:
             l.x += 2400
-            jumpCount -= 20
+            jumpCount -= 35
         elif l.x > screenx+300:
             l.x -= 2400
-            jumpCount -= 20
+            jumpCount -= 35
 
 
     frame10 = (frame10 + 1) % 10
@@ -233,8 +238,8 @@ while active:
 
     if erel[1] > 0:
         enemy.y += 8
-    enemy.x -= erel[0]//30
-    enemy.y += erel[1]//4
+    enemy.x -= erel[0]//15
+    enemy.y += erel[1]//5
     if erel[1] < 20:
         boost = False
         booster = 0

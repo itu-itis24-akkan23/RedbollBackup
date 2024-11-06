@@ -150,8 +150,8 @@ while active:
 
     if erel[1] > 0:
         enemy.y += 8
-    enemy.x -= erel[0]//30
-    enemy.y += erel[1]//4
+    enemy.x -= erel[0]//15
+    enemy.y += erel[1]//5
     if erel[1] < 20:
         boost = False
         booster = 0
