@@ -5,7 +5,6 @@ import numpy as np
 
 
 
-
 # region INIT
 pg.init()
 a = pg.display.Info()
@@ -30,6 +29,7 @@ enemy = pg.Rect(screenmx-10, 900, 60, 60)
 
 
 font = pg.font.Font(None, 36)
+horbos=0
 frame10 = 0  # 0 to 9
 vertical = -10
 
@@ -264,7 +264,7 @@ while active:
 
 
     
-    if hitbox == True:
+    if hitbox:
         window.fill((120, 80, 240))
         fpssh = cloc.get_fps()
         pg.draw.rect(window, (200, 200, 200), imagere)
