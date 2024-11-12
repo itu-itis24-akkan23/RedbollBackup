@@ -12,4 +12,4 @@
 > ~~supervised or reinforcement what you call~~ i deducted fitness by behaviors i dont like<br>
 >jumpCount is deductive element dont ask why<br>
 >no oop<br>
->algorithm.algorithm is brain ai and replay uses. master has generally one per batch functions<br>
+>algorithm.algorithm is brain that ai and replay uses. master has generally one per batch functions<br>
