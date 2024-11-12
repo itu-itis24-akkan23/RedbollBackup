@@ -13,3 +13,4 @@
 >jumpCount is deductive element dont ask why<br>
 >no oop<br>
 >algorithm.algorithm is brain that ai and replay uses. master has generally one per batch functions<br>
+run replay yourself thers already a creature in data.npy
