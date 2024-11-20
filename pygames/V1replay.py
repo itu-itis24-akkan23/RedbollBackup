@@ -20,6 +20,8 @@ jump = False
 cloc = pygame.time.Clock()
 font = pygame.font.Font(None, 36)
 horbos=0
+gravity_state = 0
+booster = 0
 frame10 = 0  # 0 to 9
 vertical = -10
 hitbox = False
@@ -202,7 +204,7 @@ while active:
             p.topleft = (pixx, pixy)
             window.blit(stone, p)
 
-    if hitbox:
+    if hitbox   :
         pygame.draw.rect(window, (200, 200, 200), imagere)
         pygame.draw.rect(window, (0, 255, 0), blob)
         pygame.draw.rect(window, (0, 255, 0), blob_left)

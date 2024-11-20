@@ -25,13 +25,13 @@ run_speed = 11
 max_velocity = 30
 jump_str = 36
 boost = False
-hboost=0
+hboost = 0
 fps = 30
-input_w=False
-input_a=False
-input_d=False
+input_w = False
+input_a = False
+input_d = False
 
-lands = []  #         0,850;   600,1000;  1200,1150;  1800,1000     <---grasses
+lands = []  # 0,850;   600,1000;  1200,1150;  1800,1000     <---grasses
 #                     180,760; 780,910;   1380,1060;  1980,910      <---stones
 enemy = pygame.Rect(screenmx-10, 900, 60, 60)
 for k in range(8):
@@ -51,6 +51,9 @@ imagere.topleft = (screenmx-20, screenm-20)
 gras = pygame.image.load("graz.png")
 stone = pygame.image.load("stone.png")
 
+gravity_state = 0
+horbos = 0
+booster = 0
 plats = []
 for platform in range(8):
     if platform < 4:
@@ -139,12 +142,12 @@ while active:
         enemy.x -= 1
 
     if abs(erel[0]) > 50:
-        horbos+=1
-        if horbos>180:
-            hboost=True
+        horbos += 1
+        if horbos > 180:
+            hboost = True
     else:
-        hboost=False
-        horbos=0
+        hboost = False
+        horbos = 0
     if hboost:
         enemy.x -= erel[0]//20
 
@@ -169,7 +172,7 @@ while active:
         hit = True
     else:
         hit = False
-        
+
     #             DISPLAY
 
     window.fill((120, 80, 240))

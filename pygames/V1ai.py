@@ -4,7 +4,6 @@ import master
 import numpy as np
 
 
-
 # region INIT
 pg.init()
 a = pg.display.Info()
@@ -29,7 +28,7 @@ enemy = pg.Rect(screenmx-10, 900, 60, 60)
 
 
 font = pg.font.Font(None, 36)
-horbos=0
+horbos = 0
 frame10 = 0  # 0 to 9
 vertical = -10
 
@@ -71,10 +70,14 @@ batchSize = 100  # Cant be changed by itself
 
 learningRate = 0.1
 afterLearn = 0.04  # Real learning rate, activates after gen20
-lr=0.02
+lr = 0.02
 continu = False
 
 # region afterINIT
+gravity_state = 0
+booster = 0
+currentParameter = []
+
 parameters = []
 if not continu:
     for i in range(batchSize):
@@ -86,7 +89,7 @@ else:
     currentParameter = parameters[0]
     algorithm.init(currentParameter)
 # endregion
-relX=0
+relX = 0
 # region MAIN
 while active:
     for i in pg.event.get():
@@ -95,12 +98,12 @@ while active:
     if input_a == input_d:
         jumpCount += 0.02
     if input_a:
-        relX+=1
+        relX += 1
     if input_d:
-        relX-=1
+        relX -= 1
     if timer == 900:
-        jumpCount-=abs(relX)*0.0001
-        relX=0
+        jumpCount -= abs(relX)*0.0001
+        relX = 0
         fitness = (900-hitCounter)/9-jumpCount/70
         allFitness.append(fitness)
         hitCounter = 0
@@ -110,8 +113,8 @@ while active:
             print("gen", genDone, max(allFitness))
             if genDone >= 50:
                 learningRate = lr
-            elif genDone>=20:
-                learningRate=afterLearn
+            elif genDone >= 20:
+                learningRate = afterLearn
             array = np.array(
                 (parameters[allFitness.index(max(allFitness))]), dtype=object)
             np.save("data.npy", array, allow_pickle=True)
@@ -174,7 +177,8 @@ while active:
     #       ALGORITHM
 
     algorithm.init(currentParameter)
-    inputs = algorithm.algorithm(lands[0:4], enemy, constants, timer, collision)
+    inputs = algorithm.algorithm(
+        lands[0:4], enemy, constants, timer, collision)
     input_w, input_a, input_d = inputs
 
     # INPUT
@@ -204,14 +208,13 @@ while active:
         l.y += vertical
         if l.y < -200:
             l.y += 1300
-            jumpCount+=40
+            jumpCount += 40
         if l.x < -700:
             l.x += 2400
             jumpCount -= 35
         elif l.x > screenx+300:
             l.x -= 2400
             jumpCount -= 35
-
 
     frame10 = (frame10 + 1) % 10
     if frame10 == 0:
@@ -262,8 +265,6 @@ while active:
 
     #             DISPLAY
 
-
-    
     if hitbox:
         window.fill((120, 80, 240))
         fpssh = cloc.get_fps()
